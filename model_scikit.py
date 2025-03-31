@@ -1,10 +1,13 @@
 import pandas as pd
 import numpy as np
+import sklearn
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.metrics import r2_score, mean_squared_error, explained_variance_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 
 # Load input X and output y
@@ -88,7 +91,6 @@ def training_model(model, X, y):
     y2_val_r2 = np.array(y2_val_r2)
     y2_val_mse = np.array(y2_val_mse)
 
-    print()
     print("Performance on Validation set - Y1: ExpVar %.3f (+- %.3f)" % (y1_val_exp_variance.mean(),y1_val_exp_variance.std()))
     print("Performance on Validation set - Y1: R2     %.3f (+- %.3f)" % (y1_val_r2.mean(),y1_val_r2.std()))
     print("Performance on Validation set - Y1: MSE    %.3f (+- %.3f)" % (y1_val_mse.mean(),y1_val_mse.std()))
@@ -96,8 +98,6 @@ def training_model(model, X, y):
     print("Performance on Validation set - Y2: ExpVar %.3f (+- %.3f)" % (y2_val_exp_variance.mean(),y2_val_exp_variance.std()))
     print("Performance on Validation set - Y2: R2     %.3f (+- %.3f)" % (y2_val_r2.mean(),y2_val_r2.std()))
     print("Performance on Validation set - Y2: MSE    %.3f (+- %.3f)" % (y2_val_mse.mean(),y2_val_mse.std()))
-
-    print()
     
     ret_model = model
     return ret_model
@@ -120,25 +120,35 @@ def retrain_model(model, X, y):
     y2_r2 = r2_score(y[:, 1], y_train_pred[:, 1])
     y2_mse = mean_squared_error(y[:, 1], y_train_pred[:, 1])
 
-    print('\t Retrain on whole dataset - Y1: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(y1_exp_variance, y1_r2, y1_mse))
-    print('\t Retrain on whole dataset - Y2: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(y2_exp_variance, y2_r2, y2_mse))
+    print('\t Retrain on whole dataset - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
+    print('\t Retrain on whole dataset - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
 
-    return trained_model
+    return trained_model, y_train_pred
 
 # Define prediction on unknown datset
 def predict_model(model, X_test):
     y_test_pred = model.predict(X_test)
+    # continued
     return y_test_pred
 
 # ----------------------------------------------------------------------
 # ----------------------------------------------------------------------
+# Training model
+# model = LinearRegression()
+# model = RandomForestRegressor()
+model = DecisionTreeRegressor()
 
-
-model = MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
-                             solver='adam', max_iter=500, random_state=42)
 trained_model = training_model(model, X, y)
 
 # Retrain model on whole dataset
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X)
-retrained_model = retrain_model(model, X_train_scaled, y)
+retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
+
+df_y_train_pred =pd.DataFrame(y_train_pred)
+# df_y_train_pred.to_csv("result_LinearRegression.csv", index = False, header = ['Y1', 'Y2'])
+
+# df_y_train_pred.to_csv("result_RandomForest.csv", index = False, header = ['Y1', 'Y2'])     
+
+df_y_train_pred.to_csv("result_DecisionTree.csv", index = False, header = ['Y1', 'Y2'])            
+

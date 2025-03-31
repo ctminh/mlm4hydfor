@@ -22,8 +22,8 @@ if __name__ == '__main__':
 
     
     parser.add_argument("-llm", "--model_name", type=str,
-                        default='MLP',
-                        help="Name of LL model for training the phenotype prediction: Linear, GB, SVM, MLP")
+                        default='RandomForest',
+                        help="Name of LL model for training the phenotype prediction: Linear, DecisionTree, RandomForest, GB, SVM, MLP")
     
 
     args = vars(parser.parse_args())
@@ -49,11 +49,46 @@ if __name__ == '__main__':
         # Retrain model on whole dataset
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X)
-        retrained_model = retrain_model(model, X_train_scaled, y)
+        retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
+
+        #Write the results to csv file
+        df_y_train_pred =pd.DataFrame(y_train_pred)
+        df_y_train_pred.to_csv("result_LinearRegression.csv", index = False, header = ['Y1', 'Y2'])
 
         # Prediction on unknow data
         # X_test_scaled = scaler.transform(X_test)
-                   
+
+    elif model_name == 'DecisionTree':
+        print('Run Decision Decision Tree model')
+
+        # Training model
+        model = DecisionTreeRegressor()
+        trained_model = training_model(model, X, y)
+
+        # Retrain model on whole dataset
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X)
+        retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
+
+        #Write the results to csv file
+        df_y_train_pred =pd.DataFrame(y_train_pred)
+        df_y_train_pred.to_csv("result_DecisionTree.csv", index = False, header = ['Y1', 'Y2']) 
+
+    elif model_name == 'RandomForest':
+        print('Run Random Forest model')
+
+        # Training model
+        model = RandomForestRegressor()
+        trained_model = training_model(model, X, y)
+
+        # Retrain model on whole dataset
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X)
+        retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
+
+        #Write the results to csv file
+        df_y_train_pred =pd.DataFrame(y_train_pred)
+        df_y_train_pred.to_csv("result_RandomForest.csv", index = False, header = ['Y1', 'Y2'])            
 
     elif model_name == 'SVM':
         print('Run SVM model')
@@ -61,11 +96,11 @@ if __name__ == '__main__':
     
     elif model_name == 'MLP':
         print('Run MLP model')
-        model = MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
-                             solver='adam', max_iter=500, random_state=42)
-        trained_model = training_model(model, X, y)
+        # model = MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
+        #                      solver='adam', max_iter=500, random_state=42)
+        # trained_model = training_model(model, X, y)
 
-        # Retrain model on whole dataset
-        scaler = StandardScaler()
-        X_train_scaled = scaler.fit_transform(X)
-        retrained_model = retrain_model(model, X_train_scaled, y)
+        # # Retrain model on whole dataset
+        # scaler = StandardScaler()
+        # X_train_scaled = scaler.fit_transform(X)
+        # retrained_model = retrain_model(model, X_train_scaled, y)

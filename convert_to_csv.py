@@ -25,5 +25,5 @@ y = df_research[['Y1', 'Y2']]
 
 # write to csv file
 print('Convert dataset to .csv file of input X and output y')
-X.to_csv('X.csv')
-y.to_csv('y.csv')
+X.to_csv('X.csv', index = False)
+y.to_csv('y.csv', index = False)

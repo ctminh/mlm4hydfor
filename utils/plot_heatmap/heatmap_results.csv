@@ -1,0 +1,5 @@
+Model,ExpVar_Y1,ExpVar_Y2,Loss_Y1, Loss_Y2
+Linear Regression,0.9860,0.9458,0.0005,0.0094
+Decision Tree,1.0000,1.0000,0.0000,0.0000
+Random Forest,0.9997,0.9989,0.0000,0.0002
+MLP,0.9902, 0.9895, 0.0004, 0.0019
