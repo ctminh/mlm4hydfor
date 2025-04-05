@@ -9,20 +9,18 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import RandomForestRegressor
 
-
-# Load input X and output y
-X = pd.read_csv("X.csv").to_numpy()
-y = pd.read_csv("y.csv").to_numpy()
-# X_test = pd.read_csv("X_test.csv")
-
-# Preprocessing the dataset
+# ----------------------------------------------------------------------
+# Function: preprocess the data
+# ----------------------------------------------------------------------
 def preprocess_standarization(X_train, X_val):
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_val_scaled = scaler.transform(X_val)
     return X_train_scaled, X_val_scaled
 
-# Define the training function
+# ----------------------------------------------------------------------
+# Function: train the model
+# ----------------------------------------------------------------------
 def training_model(model, X, y):
     # variance storing Exp-variance, R2, MSE, MAE
     y1_val_exp_variance = []
@@ -102,7 +100,9 @@ def training_model(model, X, y):
     ret_model = model
     return ret_model
 
-# Define retrain model on whole dataset
+# ----------------------------------------------------------------------
+# Function: retrain the model
+# ----------------------------------------------------------------------
 def retrain_model(model, X, y):
 
     # scaler = StandardScaler()
@@ -125,30 +125,36 @@ def retrain_model(model, X, y):
 
     return trained_model, y_train_pred
 
-# Define prediction on unknown datset
+# ----------------------------------------------------------------------
+# Function: prediction
+# ----------------------------------------------------------------------
 def predict_model(model, X_test):
     y_test_pred = model.predict(X_test)
-    # continued
     return y_test_pred
 
 # ----------------------------------------------------------------------
+# Create model objects
 # ----------------------------------------------------------------------
-# Training model
 # model = LinearRegression()
 # model = RandomForestRegressor()
-model = DecisionTreeRegressor()
+# model = DecisionTreeRegressor()
 
-trained_model = training_model(model, X, y)
+# ----------------------------------------------------------------------
+# Train and tune the model
+# ----------------------------------------------------------------------
+# trained_model = training_model(model, X, y)
 
-# Retrain model on whole dataset
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X)
-retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
+# ----------------------------------------------------------------------
+# Final train on the whole dataset
+# ----------------------------------------------------------------------
+# scaler = StandardScaler()
+# X_train_scaled = scaler.fit_transform(X)
+# retrained_model, y_train_pred = retrain_model(trained_model, X_train_scaled, y)
 
-df_y_train_pred =pd.DataFrame(y_train_pred)
+# ----------------------------------------------------------------------
+# Write prediction results to file
+# ----------------------------------------------------------------------
+# df_y_train_pred =pd.DataFrame(y_train_pred)
 # df_y_train_pred.to_csv("result_LinearRegression.csv", index = False, header = ['Y1', 'Y2'])
-
-# df_y_train_pred.to_csv("result_RandomForest.csv", index = False, header = ['Y1', 'Y2'])     
-
-df_y_train_pred.to_csv("result_DecisionTree.csv", index = False, header = ['Y1', 'Y2'])            
-
+# df_y_train_pred.to_csv("result_RandomForest.csv", index = False, header = ['Y1', 'Y2'])   
+# df_y_train_pred.to_csv("result_DecisionTree.csv", index = False, header = ['Y1', 'Y2'])

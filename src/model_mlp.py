@@ -10,13 +10,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neural_network import MLPRegressor
 
-# from model_scikit import *
-
-# Load input X and output y
-X = pd.read_csv("X.csv").to_numpy()
-y = pd.read_csv("y.csv").to_numpy()
-# X_test = pd.read_csv("X_test.csv")
-
 # Preprocessing the dataset
 def preprocess_standarization(X_train, X_val):
     scaler = StandardScaler()
@@ -143,38 +136,38 @@ def retrain_model(model, X, y):
 
     return trained_model, y_train_pred
 
-set_seeds()
+# set_seeds()
 
 # Run Optuna optimization
-study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=42))
-study.optimize(objective, n_trials=30)
+# study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=42))
+# study.optimize(objective, n_trials=30)
 
-set_seeds()
+# set_seeds()
 
 # Print best parameters
-print(" Best params: {}".format(study.best_params))
+# print(" Best params: {}".format(study.best_params))
 
 # Rebuild best model using best params
-best_params = study.best_params
-best_layer_sizes = tuple([best_params[f"n_units_l{i}"] for i in range(best_params["n_layers"])])
+# best_params = study.best_params
+# best_layer_sizes = tuple([best_params[f"n_units_l{i}"] for i in range(best_params["n_layers"])])
 
-best_model = MLPRegressor(
-    hidden_layer_sizes=best_layer_sizes,
-    learning_rate_init=best_params["learning_rate_init"],
-    solver='adam',
-    max_iter=300,
-    random_state=42
-)
+# best_model = MLPRegressor(
+#     hidden_layer_sizes=best_layer_sizes,
+#     learning_rate_init=best_params["learning_rate_init"],
+#     solver='adam',
+#     max_iter=300,
+#     random_state=42
+# )
 ###  Best params: {'n_layers': 3, 'n_units_l0': 54, 'n_units_l1': 47, 'n_units_l2': 62, 'learning_rate_init': 0.025153863501814786}
 
 # Retrain using your existing function
 # trained_model = training_model(best_model, X, y)
 
 # Final retraining on all data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-retrained_model, y_train_pred = retrain_model(best_model, X_scaled, y)
+# scaler = StandardScaler()
+# X_scaled = scaler.fit_transform(X)
+# retrained_model, y_train_pred = retrain_model(best_model, X_scaled, y)
 
-df_y_train_pred =pd.DataFrame(y_train_pred) 
+# df_y_train_pred =pd.DataFrame(y_train_pred) 
 
-df_y_train_pred.to_csv("result_MLP.csv", index = False, header = ['Y1', 'Y2'])
+# df_y_train_pred.to_csv("result_MLP.csv", index = False, header = ['Y1', 'Y2'])
