@@ -43,6 +43,17 @@ if __name__ == '__main__':
         # Test the model
         y_pred = predict_model(final_model, X_test, y_test)
 
+        print('---------------------------------')
+        print('The regression function:')
+        print(' + Coefficients: ', final_model.coef_)
+        print(' + Intercept: ', final_model.intercept_)
+        print('---------------------------------')
+        print(' + y1 = {:.4f} * x1 + {:.4f} * x2 + {:.4f} * x3 + {:.4f} * x4 + {:.4f} * x5 + {:.4f}'.format(
+            final_model.coef_[0][0], final_model.coef_[0][1], final_model.coef_[0][2], final_model.coef_[0][3], final_model.coef_[0][4], final_model.intercept_[0]))
+        print(' + y2 = {:.4f} * x1 + {:.4f} * x2 + {:.4f} * x3 + {:.4f} * x4 + {:.4f} * x5 + {:.4f}'.format(
+            final_model.coef_[1][0], final_model.coef_[1][1], final_model.coef_[1][2], final_model.coef_[1][3], final_model.coef_[1][4], final_model.intercept_[1]))
+        print('---------------------------------')
+
     elif model_name == 'DT':
 
         print('---------------------------------')
