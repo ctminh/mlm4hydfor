@@ -1,8 +1,8 @@
 import optuna
-from sklearn.neural_network import MLPRegressor
 import pandas as pd
 import numpy as np
 import random
+from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.metrics import r2_score, mean_squared_error, explained_variance_score
 from sklearn.preprocessing import StandardScaler
@@ -114,7 +114,7 @@ def objective(trial):
 
     return current_val_mse
 
-def retrain_model(model, X, y):
+def retrain_mlp_model(model, X, y):
 
     # scaler = StandardScaler()
     # X_scaled = scaler.fit_transform(X)
@@ -131,8 +131,8 @@ def retrain_model(model, X, y):
     y2_r2 = r2_score(y[:, 1], y_train_pred[:, 1])
     y2_mse = mean_squared_error(y[:, 1], y_train_pred[:, 1])
 
-    print('\t Retrain on whole dataset - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
-    print('\t Retrain on whole dataset - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
+    print('Retrain on whole dataset - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
+    print('Retrain on whole dataset - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
 
     return trained_model, y_train_pred
 

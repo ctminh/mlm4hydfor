@@ -25,6 +25,8 @@ if __name__ == '__main__':
     # ----------------------------------------------------
     X = pd.read_csv("./data/X.csv").to_numpy()
     y = pd.read_csv("./data/y.csv").to_numpy()
+    X_test = pd.read_csv("./data/X_test.csv").to_numpy()
+    y_test = pd.read_csv("./data/y_test.csv").to_numpy()
 
     if model_name == 'LR':
 
@@ -34,6 +36,12 @@ if __name__ == '__main__':
         model = LinearRegression()
         trained_model = training_model(model, X, y)
 
+        # Retrain model on whole dataset
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+        final_model, y_final_pred = retrain_model(trained_model, X_scaled, y)
+        # Test the model
+        y_pred = predict_model(final_model, X_test, y_test)
 
     elif model_name == 'DT':
 
@@ -43,6 +51,13 @@ if __name__ == '__main__':
         model = DecisionTreeRegressor()
         trained_model = training_model(model, X, y)
 
+        # Retrain model on whole dataset
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+        final_model, y_final_pred = retrain_model(trained_model, X_scaled, y)
+        # Test the model
+        y_pred = predict_model(final_model, X_test, y_test)
+
 
     elif model_name == 'RF':
         
@@ -50,7 +65,14 @@ if __name__ == '__main__':
         print('Run Random Forest model')
         print('---------------------------------')
         model = RandomForestRegressor()
-        trained_model = training_model(model, X, y)            
+        trained_model = training_model(model, X, y)
+
+        # Retrain model on whole dataset
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+        final_model, y_final_pred = retrain_model(trained_model, X_scaled, y)
+        # Test the model
+        y_pred = predict_model(final_model, X_test, y_test)       
 
     elif model_name == 'SVM':
     

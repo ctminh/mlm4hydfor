@@ -74,8 +74,8 @@ def training_model(model, X, y):
         y2_val_mse.append(y2_mse)
 
         # print to check the errors
-        print('\t Validation - Y1  {:2d}: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(train_count, y1_val_exp_variance[train_count], y1_val_r2[train_count], y1_val_mse[train_count]))
-        print('\t Validation - Y2  {:2d}: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(train_count, y2_val_exp_variance[train_count], y2_val_r2[train_count], y2_val_mse[train_count]))
+        print('\tValidation - Y1  {:2d}: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(train_count, y1_val_exp_variance[train_count], y1_val_r2[train_count], y1_val_mse[train_count]))
+        print('\tValidation - Y2  {:2d}: ExpVar={:7.3f}, R2={:7.3f}, MSE={:7.3f}'.format(train_count, y2_val_exp_variance[train_count], y2_val_r2[train_count], y2_val_mse[train_count]))
 
         train_count += 1
     
@@ -98,6 +98,7 @@ def training_model(model, X, y):
     print("Performance on Validation set - Y2: MSE    %.3f (+- %.3f)" % (y2_val_mse.mean(),y2_val_mse.std()))
     
     ret_model = model
+    
     return ret_model
 
 # ----------------------------------------------------------------------
@@ -120,16 +121,35 @@ def retrain_model(model, X, y):
     y2_r2 = r2_score(y[:, 1], y_train_pred[:, 1])
     y2_mse = mean_squared_error(y[:, 1], y_train_pred[:, 1])
 
-    print('\t Retrain on whole dataset - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
-    print('\t Retrain on whole dataset - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
+    print('--------------------------------------------------------')
+    print('Retrain on whole dataset - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
+    print('Retrain on whole dataset - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
 
     return trained_model, y_train_pred
 
 # ----------------------------------------------------------------------
 # Function: prediction
 # ----------------------------------------------------------------------
-def predict_model(model, X_test):
-    y_test_pred = model.predict(X_test)
+def predict_model(model, X_test, y_test):
+
+    scaler = StandardScaler()
+    X_test_scaled = scaler.fit_transform(X_test)
+    y_test_pred = model.predict(X_test_scaled)
+
+    # Evaluate performance
+    y1_exp_variance = explained_variance_score(y_test[:,0], y_test_pred[:,0])
+    y1_r2 = r2_score(y_test[:,0], y_test_pred[:,0])
+    y1_mse = mean_squared_error(y_test[:,0], y_test_pred[:,0])
+
+    y2_exp_variance = explained_variance_score(y_test[:,1], y_test_pred[:,1])
+    y2_r2 = r2_score(y_test[:,1], y_test_pred[:,1])
+    y2_mse = mean_squared_error(y_test[:,1], y_test_pred[:,1])
+
+    print('--------------------------------------------------------')
+    print('Final model on separate test - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
+    print('Final model on separate test - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
+    print('--------------------------------------------------------')
+
     return y_test_pred
 
 # ----------------------------------------------------------------------
