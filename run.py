@@ -110,23 +110,49 @@ if __name__ == '__main__':
         # Test the model
         y_pred = predict_mlp_model(final_model, X_test, y_test)
 
+        # y = W2 * ReLU * (W1 * X + b1) + b2
         print('---------------------------------')
-        print('The MLP coefs for predicting Y1:')
-        print(' + Coefficients: ', final_model.coefs_[0])
-        print(' + Intercept: ', final_model.intercepts_[0])
+        print('The MLP coefs for the fist (hidden) layer:')
+        print(' + Coefficients: shape=', final_model.coefs_[0].shape)
+        print(' + Intercept: shape=', final_model.intercepts_[0].shape)
         print('---------------------------------')
-        print('The MLP coefs for predicting Y2:')
-        print(' + Coefficients: ', final_model.coefs_[1])
-        print(' + Intercept: ', final_model.intercepts_[1])
+        print('The MLP coefs for the output layer:')
+        print(' + Coefficients: shape=', final_model.coefs_[1].shape)
+        print(' + Intercept: shape=', final_model.intercepts_[1].shape)
         print('---------------------------------')
 
-        print("Number of layers:", model.n_layers_)
-        print("Number of outputs:", model.n_outputs_)
-        print("Hidden layer sizes:", model.hidden_layer_sizes)
-        print("Activation function:", model.activation)
+        print('Thong tin mo hinh MLP:')
+        print("  + Num. layers:", model.n_layers_)
+        print("  + Num. outputs:", model.n_outputs_)
+        print("  + Hidden layer sizes:", model.hidden_layer_sizes)
+        print("  + Activation function:", model.activation)
+        print(" ")
 
         for i, (w, b) in enumerate(zip(model.coefs_, model.intercepts_)):
-            print(f"\nLayer {i + 1}:")
-            print(f"  Weights shape: {w.shape}")
-            print(f"  Biases shape: {b.shape}")
+            print(f"Layer {i+1}: ")
+            print(f"  + Weights shape: {w.shape}")
+            print(f"  + Biases shape: {b.shape}")
+        print('---------------------------------')
+
+        # Ghi ra file cac ma tran phi tuyen cua model MLP
+        W1 = final_model.coefs_[0]
+        b1 = final_model.intercepts_[0]
+        W2 = final_model.coefs_[1]
+        b2 = final_model.intercepts_[1]
+
+        data_heso = {}
+        for i in range(W1.shape[0]):
+            data_heso[f'W1_row{i}'] = W1[i]
+
+        for i in range(W2.shape[0]):
+            data_heso[f'W2_row{i}'] = W2[i]
         
+        data_heso['b1_col0'] = b1
+        data_heso['b2_col0'] = b2
+
+        df_heso = pd.DataFrame(data_heso)
+        print('Ghi cac ma tran he so ra file: heso_mlp.csv')
+        df_heso.to_csv('./heso_mlp.csv', index=False)
+        print('---------------------------------')
+
+    
