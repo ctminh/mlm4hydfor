@@ -11,7 +11,7 @@ if __name__ == '__main__':
     # ----------------------------------------------------
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--model", type=str,
-                        default='LinearRegression',
+                        default='MLP',
                         help="Name of regression models, e.g., LR, DT, RF, SVM, MLP")
     args = vars(parser.parse_args())
 
@@ -98,9 +98,9 @@ if __name__ == '__main__':
         print('Run MLP model')
         print('---------------------------------')
 
-        # model = MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
-        #                      solver='adam', max_iter=500, random_state=42)
-        # trained_model = training_model(model, X, y)
+        model = MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
+                             solver='adam', max_iter=500, random_state=42)
+        trained_model = training_model(model, X, y)
 
         # # Retrain model on whole dataset
         # scaler = StandardScaler()
