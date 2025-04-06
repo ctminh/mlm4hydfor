@@ -119,4 +119,14 @@ if __name__ == '__main__':
         print(' + Coefficients: ', final_model.coefs_[1])
         print(' + Intercept: ', final_model.intercepts_[1])
         print('---------------------------------')
+
+        print("Number of layers:", model.n_layers_)
+        print("Number of outputs:", model.n_outputs_)
+        print("Hidden layer sizes:", model.hidden_layer_sizes)
+        print("Activation function:", model.activation)
+
+        for i, (w, b) in enumerate(zip(model.coefs_, model.intercepts_)):
+            print(f"\nLayer {i + 1}:")
+            print(f"  Weights shape: {w.shape}")
+            print(f"  Biases shape: {b.shape}")
         
