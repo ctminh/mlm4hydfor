@@ -136,6 +136,28 @@ def retrain_mlp_model(model, X, y):
 
     return trained_model, y_train_pred
 
+def predict_mlp_model(model, X_test, y_test):
+
+    scaler = StandardScaler()
+    X_test_scaled = scaler.fit_transform(X_test)
+    y_test_pred = model.predict(X_test_scaled)
+
+    # Evaluate performance
+    y1_exp_variance = explained_variance_score(y_test[:,0], y_test_pred[:,0])
+    y1_r2 = r2_score(y_test[:,0], y_test_pred[:,0])
+    y1_mse = mean_squared_error(y_test[:,0], y_test_pred[:,0])
+
+    y2_exp_variance = explained_variance_score(y_test[:,1], y_test_pred[:,1])
+    y2_r2 = r2_score(y_test[:,1], y_test_pred[:,1])
+    y2_mse = mean_squared_error(y_test[:,1], y_test_pred[:,1])
+
+    print('--------------------------------------------------------')
+    print('Final model on separate test - Y1: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y1_exp_variance, y1_r2, y1_mse))
+    print('Final model on separate test - Y2: ExpVar={:7.4f}, R2={:7.4f}, MSE={:7.4f}'.format(y2_exp_variance, y2_r2, y2_mse))
+    print('--------------------------------------------------------')
+
+    return y_test_pred
+
 # set_seeds()
 
 # Run Optuna optimization

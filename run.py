@@ -103,6 +103,20 @@ if __name__ == '__main__':
         trained_model = training_model(model, X, y)
 
         # # Retrain model on whole dataset
-        # scaler = StandardScaler()
-        # X_train_scaled = scaler.fit_transform(X)
-        # retrained_model = retrain_model(model, X_train_scaled, y)
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+        final_model, y_final_pred = retrain_mlp_model(trained_model, X_scaled, y)
+
+        # Test the model
+        y_pred = predict_mlp_model(final_model, X_test, y_test)
+
+        print('---------------------------------')
+        print('The MLP coefs for predicting Y1:')
+        print(' + Coefficients: ', final_model.coefs_[0])
+        print(' + Intercept: ', final_model.intercepts_[0])
+        print('---------------------------------')
+        print('The MLP coefs for predicting Y2:')
+        print(' + Coefficients: ', final_model.coefs_[1])
+        print(' + Intercept: ', final_model.intercepts_[1])
+        print('---------------------------------')
+        
