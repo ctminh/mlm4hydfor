@@ -143,14 +143,12 @@ if __name__ == '__main__':
         data_heso = {}
         for i in range(W1.shape[0]):
             data_heso[f'W1_row{i}'] = W1[i]
-
         for i in range(W2.shape[0]):
             data_heso[f'W2_row{i}'] = W2[i]
-        
         data_heso['b1_col0'] = b1
         data_heso['b2_col0'] = b2
-
         df_heso = pd.DataFrame(data_heso)
+        
         print('Ghi cac ma tran he so ra file: heso_mlp.csv')
         df_heso.to_csv('./heso_mlp.csv', index=False)
         print('---------------------------------')
